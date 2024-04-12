@@ -1,0 +1,19 @@
+{
+  "name": "secure-my-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "office-to-pdf": "^4.0.0",
+    "pdfjs-dist": "^4.0.379",
+    "pdfkit": "^0.15.0"
+  }
+}
