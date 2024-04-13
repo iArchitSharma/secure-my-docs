@@ -31,25 +31,21 @@ class NodeCanvasFactory {
   }
 }
 
-function removeConvertedPdf(){
-  return new Promise((resolve, reject) => {
-      fs.unlink("../tmp/convertedPdf.pdf", (err) => {
-          if(err){
-              reject(err);
-              return;
-          }
-      });
-      resolve();
-  });
+async function removeConvertedPdf() {
+  try {
+    await fs.promises.unlink("../tmp/convertedPdf.pdf");
+    console.log("Converted PDF removed successfully.");
+  } catch (error) {
+    console.error("Error removing converted PDF:", error);
+  }
 }
 
 export async function pdftoPixels(pdfLocation) {
   const canvasFactory = new NodeCanvasFactory();
 
   try {
-    const pdfPath = process.argv[2] || pdfLocation;
-    const data = new Uint8Array(fs.readFileSync(pdfPath));
-    const pagesInfo = []; // to store width and height of each page
+    const data = new Uint8Array(fs.readFileSync(pdfLocation));
+    const pagesInfo = [];
     const pixelsData = [];
 
     const loadingTask = getDocument({
@@ -110,8 +106,8 @@ export async function pdftoPixels(pdfLocation) {
     const outputFile = "../tmp/input_file.bin";
     await fs.promises.writeFile(outputFile, concatenatedData);
     //Remove convertedPdf if it exists
-    if(fs.existsSync("../tmp/convertedPdf.pdf")){
-      removeConvertedPdf();
+    if (fs.existsSync("../tmp/convertedPdf.pdf")) {
+      await removeConvertedPdf();
     }
     console.log("Pixel data saved to a single binary file:", outputFile);
   } catch (error) {
