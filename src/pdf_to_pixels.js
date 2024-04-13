@@ -31,6 +31,18 @@ class NodeCanvasFactory {
   }
 }
 
+function removeConvertedPdf(){
+  return new Promise((resolve, reject) => {
+      fs.unlink("../tmp/convertedPdf.pdf", (err) => {
+          if(err){
+              reject(err);
+              return;
+          }
+      });
+      resolve();
+  });
+}
+
 export async function pdftoPixels(pdfLocation) {
   const canvasFactory = new NodeCanvasFactory();
 
@@ -97,9 +109,12 @@ export async function pdftoPixels(pdfLocation) {
     // Save concatenated data to a single binary file asynchronously
     const outputFile = "../tmp/input_file.bin";
     await fs.promises.writeFile(outputFile, concatenatedData);
+    //Remove convertedPdf if it exists
+    if(fs.existsSync("../tmp/convertedPdf.pdf")){
+      removeConvertedPdf();
+    }
     console.log("Pixel data saved to a single binary file:", outputFile);
   } catch (error) {
     console.error("Error converting PDF to pixels:", error);
-    throw error; // Re-throw the error to be caught by the caller
   }
 }
