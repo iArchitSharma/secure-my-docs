@@ -4,10 +4,13 @@ import path from "path";
 
 async function main() {
   try {
-    // Get the file location from command-line arguments
-    const fileLocation = process.argv[2]; // Assuming the file location is passed as the third argument
+    let fileLocation = process.argv[2];
+    const outputFile = "../../data_volume/input_file.bin";
 
-    if (!fileLocation) {
+    // if file location not provided via command line arguments, use environment variable
+    if (!fileLocation && process.env.FILE_LOCATION) {
+      fileLocation = process.env.FILE_LOCATION;
+    } else if (!fileLocation) {
       console.error("Error: File location not provided.");
       return;
     }
@@ -15,14 +18,12 @@ async function main() {
     const fileExtension = getFileExtension(fileLocation);
 
     if (fileExtension !== ".pdf") {
-      // Convert non-PDF files to PDF
       console.log("Converting non-PDF file to PDF...");
       await toPdf(fileLocation);
       console.log("PDF file generated successfully!");
     }
 
-    // Now proceed with converting PDF to pixels
-    await pdftoPixels(fileExtension === ".pdf" ? fileLocation : "../tmp/convertedPdf.pdf");
+    await pdftoPixels(fileExtension === ".pdf" ? fileLocation : "../tmp/convertedPdf.pdf", outputFile);
     console.log("Step 1: PDF converted to pixels successfully.");
   } catch (error) {
     console.error("Error", error);

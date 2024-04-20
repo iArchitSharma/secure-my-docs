@@ -40,7 +40,7 @@ async function removeConvertedPdf() {
   }
 }
 
-export async function pdftoPixels(pdfLocation) {
+export async function pdftoPixels(pdfLocation, outputFile) {
   const canvasFactory = new NodeCanvasFactory();
 
   try {
@@ -103,7 +103,7 @@ export async function pdftoPixels(pdfLocation) {
     );
 
     // Save concatenated data to a single binary file asynchronously
-    const outputFile = "../tmp/input_file.bin";
+    // const outputFile = "../tmp/input_file.bin";
     await fs.promises.writeFile(outputFile, concatenatedData);
     //Remove convertedPdf if it exists
     if (fs.existsSync("../tmp/convertedPdf.pdf")) {
