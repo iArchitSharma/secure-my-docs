@@ -1,82 +1,66 @@
-import {exec} from'child_process';
+import { exec } from 'child_process';
 
-const fileLocation = "F:\\projects\\existing.xlsx";
-const saveLocation = "C:\\Users\\archi\\Downloads\\";
-
-// Split the string by backslashes and get the last element
-const segments = fileLocation.split("\\");
-const fileName = segments[segments.length - 1];
-
-exec("docker images | grep -w sec-docs", (error, stdout, stderr) => {
-  if (error) {
-    console.error(`Error: ${error.message}`);
-  }
-  if (stderr) {
-    console.error(`stderr: ${stderr}`);
-  }
-  if (stdout.trim() !== '') {
-    console.log('Image exists');
-     runContainer();
-  } else {
-    console.log('Image does not exist');
-     buildImage();
-  }
-});
-
-// Build Docker Image
-function buildImage(){
-  exec('docker build -t sec-docs ../../', (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-    runContainer();
+// Helper function to execute a command and return a Promise
+function execPromise(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(`Error: ${error.message}`);
+      } else if (stderr) {
+        reject(`stderr: ${stderr}`);
+      } else {
+        resolve(stdout.trim());
+      }
+    });
   });
 }
 
-// Run the Container
-function runContainer() {
-    exec(`docker run --network none -d --name my-sec-docs -v data_volume:/data_volume -e FILE_PATH="/data_volume/${fileName}" sec-docs`, (error2, stdout2, stderr2) => {
-      if (error2) {
-        console.error(`Error running container: ${error2.message}`);
-        return;
-      }
-      if (stderr2) {
-        console.error(`Error running container: ${stderr2}`);
-        return;
-      }
-      console.log(`Container started successfully: ${stdout2}`);
-      // Step2
-      exec(`docker cp ${fileLocation} my-sec-docs:/data_volume/`, (error2, stdout2, stderr2) => {
-        if (error2) {
-          console.error(`Error copying the Document: ${error2.message}`);
-          return;
-        }
-        if (stderr2) {
-          console.error(`Error copying the Document: ${stderr2}`);
-          return;
-        }
-        console.log(`Document copyed successfully: ${stdout2}`);
-        saveFile();
-      });
-    });
+const fileLocation = "F:\\projects\\existing.xlsx";
+const saveLocation = "C:\\Users\\archi\\Downloads\\";
+const segments = fileLocation.split("\\");
+const fileName = segments[segments.length - 1];
+
+
+async function runSequence() {
+  try {
+    // Step 1: Check if the image exists
+    const imageCheck = await execPromise("docker images | grep -w sec-docs");
+    console.log('Image exists');
+    
+    // Step 2: Build image if it doesn't exist
+    if (imageCheck === '') {
+      console.log('Image does not exist');
+      await execPromise('docker build -t sec-docs ../../');
+    }
+
+    // Step 3: Run the container
+    const runOutput = await execPromise(
+      `docker run --network none -d --name my-sec-docs -v data_volume:/data_volume -e FILE_PATH="/data_volume/${fileName}" sec-docs`
+    );
+    console.log(`Container started successfully: ${runOutput}`);
+
+    // Step 4: Copy the file to the container
+    const copyOutput = await execPromise(
+      `docker cp ${fileLocation} my-sec-docs:/data_volume/`
+    );
+    console.log(`Document copied successfully: ${copyOutput}`);
+
+    // Step 5: Save the file from the container
+    const saveOutput = await execPromise(
+      `docker cp my-sec-docs:/data_volume/safe_output.pdf ${saveLocation}`
+    );
+    console.log(`File saved successfully: ${saveOutput}`);
+
+    // Step 6: **Stop** and then remove the container
+    const stopOutput = await execPromise(`docker stop my-sec-docs`);
+    console.log(`Container stopped successfully: ${stopOutput}`);
+
+    const removeOutput = await execPromise(`docker rm my-sec-docs`);
+    console.log(`Container removed successfully: ${removeOutput}`);
+    
+  } catch (error) {
+    console.error(`Operation failed: ${error}`);
+  }
 }
 
-function saveFile(){
-  exec(`docker cp my-sec-docs:/data_volume/safe_output.pdf ${saveLocation}`, (error2, stdout2, stderr2) => {
-    if (error2) {
-      console.error(`Error saving safe_output.pdf: ${error2.message}`);
-      return;
-    }
-    if (stderr2) {
-      console.error(`Error saving safe_output.pdf: ${stderr2}`);
-      return;
-    }
-    console.log(`File saved successfully: ${stdout2}`);
-});
-}
+runSequence();
