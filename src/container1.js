@@ -7,7 +7,7 @@ async function main() {
     let fileLocation = process.argv[2];
     const outputFile = "../../data_volume/input_file.bin";
 
-    // if file location not provided via command line arguments, use environment variable
+    //if file location not provided via command line arguments, use environment variable
     if (!fileLocation && process.env.FILE_LOCATION) {
       fileLocation = process.env.FILE_LOCATION;
     } else if (!fileLocation) {

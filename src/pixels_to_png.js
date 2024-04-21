@@ -4,7 +4,7 @@ import { createCanvas, ImageData as CanvasImageData } from "canvas";
 export function pixelstoPNG() {
     function removeBin(){
         return new Promise((resolve, reject) => {
-            fs.unlink("../tmp/input_file.bin", (err) => {
+            fs.unlink("../../data_volume/input_file.bin", (err) => {
                 if(err){
                     reject(err);
                     return;
@@ -59,7 +59,7 @@ export function pixelstoPNG() {
         }
 
         // Read concatenated pixel data from binary file
-        const concatenatedData = fs.readFileSync("../tmp/input_file.bin");
+        const concatenatedData = fs.readFileSync("../../data_volume/input_file.bin");
 
         // Reconstruct pixel data array
         const pixelDataArray = reconstructPixelData(concatenatedData);

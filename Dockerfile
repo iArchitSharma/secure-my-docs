@@ -11,6 +11,7 @@ WORKDIR /app
 COPY . /app
 RUN npm install
 
-# Command to run the script
-CMD ["node", "src/container1.js", "existing.xlsx"]
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
 

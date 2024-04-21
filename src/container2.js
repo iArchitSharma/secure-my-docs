@@ -1,7 +1,7 @@
 import { pixelstoPNG } from "./pixels_to_png.js";
 import { pngtoPDF } from "./png_to_pdf.js"
 
-const outputDir = "../tmp/safe_output.pdf";
+const outputDir = "../../data_volume/safe_output.pdf";
 
 async function main() {
   try {

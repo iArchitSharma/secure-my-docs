@@ -1,6 +1,12 @@
 import {exec} from'child_process';
 
-exec("docker images | grep -w sec-doc", (error, stdout, stderr) => {
+const fileLocation = "F:\\projects\\secure-my-docs\\existing.xlsx";
+
+// Split the string by backslashes and get the last element
+const segments = fileLocation.split("\\");
+const fileName = segments[segments.length - 1];
+
+exec("docker images | grep -w sec-docs", (error, stdout, stderr) => {
   if (error) {
     console.error(`Error: ${error.message}`);
   }
@@ -12,7 +18,7 @@ exec("docker images | grep -w sec-doc", (error, stdout, stderr) => {
      runContainer();
   } else {
     console.log('Image does not exist');
-    // buildImage();
+     buildImage();
   }
 });
 
@@ -34,19 +40,7 @@ function buildImage(){
 
 // Run the Container
 function runContainer() {
-  // Create a Docker network with no external connectivity
-  exec('docker network create --driver=none no-internet', (error1, stdout1, stderr1) => {
-    if (error1) {
-      console.error(`Error creating network: ${error1.message}`);
-      return;
-    }
-    if (stderr1) {
-      console.error(`Error creating network: ${stderr1}`);
-      return;
-    }
-
-    // Run the container and connect it to the no-internet network
-    exec('docker run --rm --network=no-internet --name=my-container -d sec-docs', (error2, stdout2, stderr2) => {
+    exec(`docker run --network none -d --name my-sec-docs -v data_volume:/data_volume -e FILE_PATH="/data_volume/${fileName}" sec-docs`, (error2, stdout2, stderr2) => {
       if (error2) {
         console.error(`Error running container: ${error2.message}`);
         return;
@@ -56,6 +50,17 @@ function runContainer() {
         return;
       }
       console.log(`Container started successfully: ${stdout2}`);
+      // Step2
+      exec(`docker cp ${fileLocation} my-sec-docs:/data_volume/`, (error2, stdout2, stderr2) => {
+        if (error2) {
+          console.error(`Error running container: ${error2.message}`);
+          return;
+        }
+        if (stderr2) {
+          console.error(`Error running container: ${stderr2}`);
+          return;
+        }
+        console.log(`Container started successfully: ${stdout2}`);
+      });
     });
-  });
 }
