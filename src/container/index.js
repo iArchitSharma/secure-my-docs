@@ -1,6 +1,7 @@
 import {exec} from'child_process';
 
-const fileLocation = "F:\\projects\\secure-my-docs\\existing.xlsx";
+const fileLocation = "F:\\projects\\existing.xlsx";
+const saveLocation = "C:\\Users\\archi\\Downloads\\";
 
 // Split the string by backslashes and get the last element
 const segments = fileLocation.split("\\");
@@ -53,14 +54,29 @@ function runContainer() {
       // Step2
       exec(`docker cp ${fileLocation} my-sec-docs:/data_volume/`, (error2, stdout2, stderr2) => {
         if (error2) {
-          console.error(`Error running container: ${error2.message}`);
+          console.error(`Error copying the Document: ${error2.message}`);
           return;
         }
         if (stderr2) {
-          console.error(`Error running container: ${stderr2}`);
+          console.error(`Error copying the Document: ${stderr2}`);
           return;
         }
-        console.log(`Container started successfully: ${stdout2}`);
+        console.log(`Document copyed successfully: ${stdout2}`);
+        saveFile();
       });
     });
+}
+
+function saveFile(){
+  exec(`docker cp my-sec-docs:/data_volume/safe_output.pdf ${saveLocation}`, (error2, stdout2, stderr2) => {
+    if (error2) {
+      console.error(`Error saving safe_output.pdf: ${error2.message}`);
+      return;
+    }
+    if (stderr2) {
+      console.error(`Error saving safe_output.pdf: ${stderr2}`);
+      return;
+    }
+    console.log(`File saved successfully: ${stdout2}`);
+});
 }
