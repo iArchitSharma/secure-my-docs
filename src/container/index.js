@@ -1,5 +1,6 @@
-import { exec } from 'child_process';
+import { exec } from "child_process";
 
+export function startContainer(floc,fname,sloc){
 // Helper function to execute a command and return a Promise
 function execPromise(command) {
   return new Promise((resolve, reject) => {
@@ -15,22 +16,22 @@ function execPromise(command) {
   });
 }
 
-const fileLocation = "F:\\projects\\existing.xlsx";
-const saveLocation = "C:\\Users\\archi\\Downloads\\";
-const segments = fileLocation.split("\\");
-const fileName = segments[segments.length - 1];
-
+const fileLocation = floc;
+const saveLocation = sloc;
+const fileName = fname;
+// const segments = fileLocation.split("\\");
+// const fileName = segments[segments.length - 1];
 
 async function runSequence() {
   try {
     // Step 1: Check if the image exists
     const imageCheck = await execPromise("docker images | grep -w sec-docs");
-    console.log('Image exists');
-    
+    console.log("Image exists");
+
     // Step 2: Build image if it doesn't exist
-    if (imageCheck === '') {
-      console.log('Image does not exist');
-      await execPromise('docker build -t sec-docs ../../');
+    if (imageCheck === "") {
+      console.log("Image does not exist");
+      await execPromise("docker build -t sec-docs ../../");
     }
 
     // Step 3: Run the container
@@ -57,10 +58,10 @@ async function runSequence() {
 
     const removeOutput = await execPromise(`docker rm my-sec-docs`);
     console.log(`Container removed successfully: ${removeOutput}`);
-    
   } catch (error) {
     console.error(`Operation failed: ${error}`);
   }
 }
 
-runSequence();
+ runSequence();
+}
