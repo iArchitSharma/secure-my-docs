@@ -1,6 +1,5 @@
 import { exec } from "child_process";
 
-export function startContainer(floc,fname,sloc){
 // Helper function to execute a command and return a Promise
 function execPromise(command) {
   return new Promise((resolve, reject) => {
@@ -16,13 +15,12 @@ function execPromise(command) {
   });
 }
 
-const fileLocation = floc;
-const saveLocation = sloc;
-const fileName = fname;
+// const fileLocation = "C:\\Users\\archi\\Downloads\\";
+// const saveLocation = "C:\\Users\\archi\\Downloads\\";
 // const segments = fileLocation.split("\\");
 // const fileName = segments[segments.length - 1];
 
-async function runSequence() {
+export async function runSequence(fileLocation,fileName,saveLocation) {
   try {
     // Step 1: Check if the image exists
     const imageCheck = await execPromise("docker images | grep -w sec-docs");
@@ -63,5 +61,4 @@ async function runSequence() {
   }
 }
 
- runSequence();
-}
+//  runSequence();
