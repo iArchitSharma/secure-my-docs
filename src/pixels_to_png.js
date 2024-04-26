@@ -32,7 +32,7 @@ export function pixelstoPNG() {
                 offset += 8; // Move offset after reading width and height
                 const pageData = concatenatedData.slice(offset, offset + width * height * 4);
                 pixelsData.push({ width, height, data: pageData });
-                offset += width * height * 4; // Move offset to the next page
+                offset += width * height * 4; 
             }
 
             return pixelsData;
@@ -67,7 +67,6 @@ export function pixelstoPNG() {
         // Define output folder (change this to your desired folder)
         const outputFolder = "../tmp/output_images";
 
-        // Create output folder if it doesn't exist
         if (!fs.existsSync(outputFolder)) {
             fs.mkdirSync(outputFolder);
         }
@@ -76,12 +75,12 @@ export function pixelstoPNG() {
         saveImagesFromPixelData(pixelDataArray, outputFolder)
             .then(() => {
                 console.log("Images saved successfully.");
-                resolve(); // Resolve the outer promise if saving images is successful
+                resolve();
                 removeBin();
             })
             .catch(error => {
                 console.error("Error saving images:", error);
-                reject(error); // Reject the outer promise if there's an error
+                reject(error); 
             });
     });
 }

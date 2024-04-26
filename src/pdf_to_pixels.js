@@ -102,8 +102,6 @@ export async function pdftoPixels(pdfLocation, outputFile) {
       })
     );
 
-    // Save concatenated data to a single binary file asynchronously
-    // const outputFile = "../tmp/input_file.bin";
     await fs.promises.writeFile(outputFile, concatenatedData);
     //Remove convertedPdf if it exists
     if (fs.existsSync("../tmp/convertedPdf.pdf")) {

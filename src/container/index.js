@@ -1,6 +1,5 @@
 import { exec } from "child_process";
 
-// Helper function to execute a command and return a Promise
 function execPromise(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -15,8 +14,8 @@ function execPromise(command) {
   });
 }
 
-// const fileLocation = "C:\\Users\\archi\\Downloads\\";
-// const saveLocation = "C:\\Users\\archi\\Downloads\\";
+// const fileLocation = "C:\\Users\\xyz\\Downloads\\try.pdf";
+// const saveLocation = "C:\\Users\\xyz\\Downloads\\";
 // const segments = fileLocation.split("\\");
 // const fileName = segments[segments.length - 1];
 
@@ -61,4 +60,3 @@ export async function runSequence(fileLocation,fileName,saveLocation) {
   }
 }
 
-//  runSequence();

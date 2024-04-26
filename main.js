@@ -37,14 +37,12 @@ ipcMain.on("select-directory", async (event) => {
   });
 
   if (filePaths && filePaths.length > 0) {
-    // Send the selected directory back to the renderer process
     event.sender.send("directory-selected", filePaths[0]);
   } else {
     event.sender.send("directory-selected", null);
   }
 });
 
-// Listen for the event from the renderer process to trigger the run sequence
 ipcMain.on("trigger-container", (event, floc, fname, sloc) => {
   runSequence(floc, fname, sloc); 
 });
