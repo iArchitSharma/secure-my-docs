@@ -236,6 +236,6 @@ _~/.gitconfig_
   commit = commit -s
 ```
 
-Or you may configure your IDE, for example, Visual Studio Code to automatically sign-off commits for you:
+Or you may configure your IDE, for example, VS Code to automatically sign-off commits for you:
 
 <a href="./.github/assets/images/git-signoff-vscode.webp" ><img src="./.github/assets/images/git-signoff-vscode.webp" width="50%"/><a>
