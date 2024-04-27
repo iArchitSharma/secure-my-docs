@@ -21,3 +21,7 @@ Sec-my-Docs can convert these types of document into safe PDFs:
 - other image formats (`.gif`, `.bmp`, `.pnm`, `.pbm`, `.ppm`)
 
 Sec-my-Docs is inspired by [Qubes trusted PDF](https://blog.invisiblethings.org/2013/02/21/converting-untrusted-pdfs-into-trusted.html), but is designed to work on operating systems other than Qubes. Instead of using virtual machines, it employs Docker containers as isolated environments.
+
+# License and Copyright
+
+Licensed under the AGPLv3: https://opensource.org/licenses/agpl-3.0
