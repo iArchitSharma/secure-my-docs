@@ -8,8 +8,9 @@ VOLUME /data_volume
 WORKDIR /app
 
 # Copy JavaScript files
-COPY . /app
+COPY src/package.json /app/package.json
 RUN npm install
+COPY . /app
 
 RUN chmod +x /app/entrypoint.sh
 
