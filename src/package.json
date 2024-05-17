@@ -1,0 +1,19 @@
+{
+  "name": "secure-my-docs",
+  "version": "1.0.0",
+  "description": "Transform potentially risky PDFs, office documents, or images into secure PDFs.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Archit Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "office-to-pdf": "^4.0.0",
+    "pdfjs-dist": "^4.0.379",
+    "pdfkit": "^0.15.0"
+  }
+}

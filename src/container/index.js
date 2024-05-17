@@ -19,16 +19,22 @@ function execPromise(command) {
 // const segments = fileLocation.split("\\");
 // const fileName = segments[segments.length - 1];
 
-export async function runSequence(fileLocation,fileName,saveLocation) {
+export async function runSequence(fileLocation, fileName, saveLocation) {
   try {
     // Step 1: Check if the image exists
-    const imageCheck = await execPromise("docker images | grep -w sec-docs");
-    console.log("Image exists");
+    let imageExists = false;
+    try {
+      await execPromise("docker image inspect sec-docs");
+      imageExists = true;
+      console.log("Image exists");
+    } catch (err) {
+      console.log("Image does not exist");
+    }
 
     // Step 2: Build image if it doesn't exist
-    if (imageCheck === "") {
-      console.log("Image does not exist");
-      await execPromise("docker build -t sec-docs ../../");
+    if (!imageExists) {
+      await execPromise("docker build -t sec-docs ./");
+      console.log("Image built successfully");
     }
 
     // Step 3: Run the container
@@ -49,7 +55,7 @@ export async function runSequence(fileLocation,fileName,saveLocation) {
     );
     console.log(`File saved successfully: ${saveOutput}`);
 
-    // Step 6: **Stop** and then remove the container
+    // Step 6: Stop and then remove the container
     const stopOutput = await execPromise(`docker stop my-sec-docs`);
     console.log(`Container stopped successfully: ${stopOutput}`);
 
@@ -59,4 +65,3 @@ export async function runSequence(fileLocation,fileName,saveLocation) {
     console.error(`Operation failed: ${error}`);
   }
 }
-

@@ -1,2 +1,7 @@
 node_modules
 src/container/
+src/ui/
+main.js
+package-lock.json
+package.json
+.gitignore
