@@ -153,7 +153,7 @@ npm i
 **10.** Run the app locally to preview changes.
 
 ```
-npm run start
+npx electron .
 ```
 
 This will run a local webserver with "live reload" conveniently enabled. ( **NOTE**: while using the make command on Windows, there sometimes arises an error in identifying the command even after it is installed (unrecognized command), this is because the PATH for the binary might not be set correctly ).

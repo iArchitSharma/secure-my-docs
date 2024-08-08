@@ -1,11 +1,14 @@
 {
   "name": "secure-my-docs",
+  "productName": "Secure My Docs",
   "version": "1.0.0",
   "description": "Transform potentially risky PDFs, office documents, or images into secure PDFs.",
   "main": "main.js",
   "type": "module",
   "scripts": {
     "start": "electron-forge start",
+    "package-win": "electron-packager . secure-my-docs --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Secure My Docs\"",
+    "package-linux": "electron-packager . secure-my-docs --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds",
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "electron-forge package",
     "make": "electron-forge make"
@@ -29,6 +32,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
-    "electron": "^30.0.6"
+    "electron": "^30.3.1",
+    "electron-packager": "^17.1.2"
   }
 }
