@@ -5,3 +5,5 @@ main.js
 package-lock.json
 package.json
 .gitignore
+release-builds
+assets
