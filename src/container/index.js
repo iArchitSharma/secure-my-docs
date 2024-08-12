@@ -33,7 +33,7 @@ export async function runSequence(fileLocation, fileName, saveLocation) {
 
     // Step 2: Build image if it doesn't exist
     if (!imageExists) {
-      await execPromise("docker build -t sec-docs ./");
+      await execPromise("docker build --no-cache -t sec-docs ./img");
       console.log("Image built successfully");
     }
 
